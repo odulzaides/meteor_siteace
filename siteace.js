@@ -42,13 +42,15 @@ if (Meteor.isClient) {
         username: function () {
             if (Meteor.user()) {
                 return Meteor.user().username;
-                return Meteor.user().emails[0].address;
+                //return Meteor.user().emails[0].address;
+
             }
             else {
                 return "anonymous internet user";
             }
         }
     });
+
 
 
     /////
@@ -87,9 +89,27 @@ if (Meteor.isClient) {
 
             // here is an example of how to get the url out of the form:
             var url = event.target.url.value;
+            var title = event.target.title.value;
+            var description = event.target.description.value;
             console.log("The url they entered is: " + url);
 
             //  TODO - put your website saving code in here!
+            if (Meteor.user()){
+                Websites.insert({
+                    url:url,
+                    title:title,
+                    description:description,
+                    createdOn:new Date(),
+                    createdBy:Meteor.user()._id
+                });
+                $("#url").val(" ");
+                $("#title").val(" ");
+                $("#description").val(" ");
+                $("#website_form").toggle('slow');
+
+                return false;
+
+            }
 
             return false;// stop the form submit from reloading the page
 
