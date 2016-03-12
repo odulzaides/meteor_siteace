@@ -13,7 +13,7 @@
 
         </div>
         <div class="login"><br>
-          {{> loginButtons}}
+            {{> loginButtons}}
 
         </div>
     </div>
@@ -28,10 +28,11 @@
 
 
 <template name="website_form">
-    <a class="btn btn-default js-toggle-website-form" href="#">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    </a>
-
+    {{# if currentUser}}<!-- Only displays the 'add button' if someone is logged in.-->
+        <a class="btn btn-default js-toggle-website-form" href="#">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+    {{/if}}
     <div id="website_form" class="hidden_div">
         <form class="js-save-website-form">
             <div class="form-group">
@@ -70,12 +71,18 @@
         <p>
             {{description}}
         </p>
-        <a href="#" class="btn btn-default js-upvote">
-            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-        </a>
-        <a href="#" class="btn btn-default js-downvote">
-            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-        </a>
+        <p>
+            Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span>  on: <span style="color:rgb(72, 159, 218)">{{setDate}}</span> at <span style="color:rgb(72, 159, 218)">{{setTime}}</span>
+            <!--// ADD THE NUMBER OF UP VOTES AND DOWN VOTES -->
+        </p>
+
+
+        <!--<a href="#" class="btn btn-default js-upvote">-->
+            <!--<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>-->
+        <!--</a>-->
+        <!--<a href="#" class="btn btn-default js-downvote">-->
+            <!--<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>-->
+        <!--</a>-->
         <!-- you will be putting your up and down vote buttons in here! -->
         <a href="#" class="btn btn-default js-upvote">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
