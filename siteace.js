@@ -2,24 +2,27 @@ Websites = new Mongo.Collection("websites");
 
 if (Meteor.isClient) {
 
-    //Session.set("imageLimit", 8);
-    //
-    //lastScrollTop = 0;
-    //$(window).scroll(function (event) {
-    //    // test if we are near the bottom of the window
-    //    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-    //        // where are we in the page?
-    //        var scrollTop = $(this).scrollTop();
-    //        // test if we are going down
-    //        if (scrollTop > lastScrollTop) {
-    //            // yes we are heading down...
-    //            Session.set("imageLimit", Session.get("imageLimit") + 4);
-    //        }
-    //
-    //        lastScrollTop = scrollTop;
-    //    }
-    //
-    //})
+    Session.set("websiteLimit", 8);
+
+
+    lastScrollTop = 0;
+    $(window).scroll(function (event) {
+
+        // test if we are near the bottom of the window
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            // where are we in the page?
+            var scrollTop = $(this).scrollTop();
+            // test if we are going down
+            if (scrollTop > lastScrollTop) {
+                // yes we are heading down...
+                console.log("We are heading down");
+                Session.set("websiteLimit", Session.get("websiteLimit") + 4);
+            }
+
+            lastScrollTop = scrollTop;
+        }
+
+    })
 
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_AND_EMAIL"
@@ -54,21 +57,12 @@ if (Meteor.isClient) {
     Template.website_item.helpers({
         getUser:function(user_id){
             var user = Meteor.users.findOne({_id:user_id});
-            console.log(user);
+            // console.log(user);
             if(user){
                 return user.username;
             } else {
                 return "Anonymous internet user"
             }
-        },
-        setDate:function(createdOn){
-            var date = new Date();
-            var createDate = moment(date).format("MM/DD/YY");
-            return createDate;
-        },
-        setTime:function(createdOn){
-            var createTime = moment(date).format("h:hh A");
-            return createTime;
         }
     });
 
@@ -86,6 +80,7 @@ if (Meteor.isClient) {
             console.log("Up voting website with id " + website_id);
             //
             // TODO - put the code in here to add a vote to a website!
+            Websites.update({_id: website_id},{$inc: {upvote: +1}}); // for a vote UP
 
             return false;// prevent the button from reloading the page
         },
@@ -97,6 +92,7 @@ if (Meteor.isClient) {
             console.log("Down voting website with id " + website_id);
 
             // TODO - put the code in here to remove a vote from a website!
+            Websites.update({_id: website_id},{$inc: {downvote: +1}});
 
             return false;// prevent the button from reloading the page
         }
@@ -116,17 +112,18 @@ if (Meteor.isClient) {
 
             //  TODO - put your website saving code in here!
             if (Meteor.user()){
-                var date = Date();
-                //date = date.toLocaleDateString()+ " " + date.toLocaleTimeString();
+                var date = new Date();
                 Websites.insert({
                     url:url,
                     title:title,
                     description:description,
                     createdOn:date,
-                    createdBy:Meteor.user()._id
+                    createdBy:Meteor.user()._id,
+                    upVote:0,
+                    downVote:0
                 });
 
-                console.log(date);
+                
                 $("#url").val(" ");
                 $("#title").val(" ");
                 $("#description").val(" ");
@@ -153,25 +150,33 @@ if (Meteor.isServer) {
                 title: "Goldsmiths Computing Department",
                 url: "http://www.gold.ac.uk/computing/",
                 description: "This is where this course was developed.",
-                createdOn: moment(date).format("MM/DD/YY h:hh A")
+                createdOn:Date(),
+                upvote:0,
+                downvote:0
             });
             Websites.insert({
                 title: "University of London",
                 url: "http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route",
                 description: "University of London International Programme.",
-                createdOn: moment(date).format("MM/DD/YY h:hh A")
+                createdOn:Date(),
+                upvote:0,
+                downvote:0
             });
             Websites.insert({
                 title: "Coursera",
                 url: "http://www.coursera.org",
                 description: "Universal access to the world’s best education.",
-                createdOn: moment(date).format("MM/DD/YY h:hh A")
+                createdOn:Date(),
+                upvote:0,
+                downvote:0
             });
             Websites.insert({
                 title: "Google",
                 url: "http://www.google.com",
                 description: "Popular search engine.",
-                createdOn: moment(date).format("MM/DD/YY h:hh A")
+                createdOn:Date(),
+                upvote:0,
+                downvote:0
             });
         }
     });

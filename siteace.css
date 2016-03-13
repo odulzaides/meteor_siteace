@@ -2,9 +2,9 @@
 .hidden_div{
 	display:none;
 }
-/*.login{*/
-	/*float:right;*/
-	/*padding-right: 10%;*/
-	/*color:#fff;*/
-
-/*}*/
+.up-down{
+	padding:2px;
+	float:right;
+	padding-right:65%;
+	padding-top: 1.4%;
+}

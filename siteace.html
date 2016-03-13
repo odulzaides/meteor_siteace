@@ -65,30 +65,28 @@
 
 <!-- template that displays individual website entries -->
 <template name="website_item">
-    <li>
+    <li style="border-top:1px solid gray;margin-top:2%;">
         <a href="{{url}}">{{title}}</a>
 
         <p>
             {{description}}
         </p>
         <p>
-            Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span>  on: <span style="color:rgb(72, 159, 218)">{{setDate}}</span> at <span style="color:rgb(72, 159, 218)">{{setTime}}</span>
+            Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span>  
+            on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span> 
+
             <!--// ADD THE NUMBER OF UP VOTES AND DOWN VOTES -->
-        </p>
-
-
-        <!--<a href="#" class="btn btn-default js-upvote">-->
-            <!--<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>-->
-        <!--</a>-->
-        <!--<a href="#" class="btn btn-default js-downvote">-->
-            <!--<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>-->
-        <!--</a>-->
-        <!-- you will be putting your up and down vote buttons in here! -->
+        </p>        
         <a href="#" class="btn btn-default js-upvote">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </a>
         <a href="#" class="btn btn-default js-downvote">
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         </a>
+         <p class="up-down">
+             <span class="glyphicon glyphicon-thumbs-up" ></span>     {{upvote}}      
+             <span class="glyphicon glyphicon-thumbs-down"></span>  {{downvote}}  
+        </p>
+       
     </li>
 </template>
