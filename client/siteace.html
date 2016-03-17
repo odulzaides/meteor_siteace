@@ -75,6 +75,7 @@
 </template>
 <!-- Website List -->
 <template name="website_list">
+<h1 class="display-2">Sign in to start adding website recommendations</h1>
     <ol>
         {{#each websites}} {{>website_item}} {{/each}}
     </ol>
@@ -102,9 +103,13 @@
         </p>
     </li>
 </template>
-<!-- Website Detail-->
+<!-- Website Detail and Comments -->
 <template name="comments">
     <div class="container">
+    <ul class="breadcrumb">
+        <li><a href="/website_list">Back to Website list</a></li>
+    </ul>
+       
         <a href="{{url}}">{{title}}</a>
         <p>
             {{description}}
@@ -132,8 +137,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-
-            <!-- FORM FOR COMMENTS -->
+                <!-- FORM FOR COMMENTS -->
                 <form action="" class=" js-comment-add">
                     <textarea style="width:40%;height:15%;" placeholder="Message" id="comment"></textarea>
                     <br>
@@ -143,18 +147,19 @@
                 </form>
             </div>
         </div>
-
         <!--  COMMENTS -->
-       <div class="row">
-            <ul>
-               {{#each websites}} 
-                        {{>comments}} 
-                   {{/each}}
-           
-           </ul>
-       </div>
-       
-   </div>  <!--  Container -->
+        {{#each comments}}
+        <div class="panel panel-default">
+            <div class="panel-heading">Added by:  <strong>{{getUser createdBy}}</strong>     On:  <strong>{{createdOn}}</strong> </div>
+            <div class="panel-body">
+                {{content}}
+            </div>
+        </div>
+        {{else}}
+        <p class="alert alert-warning">No comments yet!</p>
+        {{/each}}
+    </div>
+    <!--  Container -->
 </template>
 <template name="comments">
     <li id="comments">
