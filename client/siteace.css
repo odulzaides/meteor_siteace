@@ -1,4 +1,8 @@
 /* CSS declarations go here */
+html,
+body{
+	height:100%;
+}
 .hidden_div{
 	display:none;
 }
@@ -8,3 +12,18 @@
 	padding-right:65%;
 	padding-top: 1.4%;
 }
+.cover{
+	background: #444 url('/Web-Page-Backgrounds-picture.jpg') center center no-repeat;
+	background-size:cover;
+	height:100%;
+	width:100%;
+	text-align: center;
+	display:flex;
+	align-items:center;
+	color: whitesmoke;
+
+}
+.cover-caption{
+	width:100%;
+}
+

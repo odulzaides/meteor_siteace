@@ -3,35 +3,57 @@
 </head>
 
 <body>
-<!-- navbar  - you will be putting the login functions here -->
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
+</body>
+<!-- ===========================================
+                        Templates
+ ============================================-->
+<!-- App Layout -->
+<template name="app_layout">
+    {{>yield "navbar"}}  
+    {{>yield "main"}}
+</template>
+<!-- Welcome -->
+<template name="welcome">
+    <section class="cover">
+        <div class="cover-caption ">
+            <div class="container">
+                <div class="col-sm-10">
+                    <h1 class="display-1">Welcome to the Website Share {{username}} !</h1>
+                    <label for="button">
+                        <a href="/website_list" class="btn btn-info">Click to Enter</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- {{> website_form}} {{> website_list}} -->
+</template>
+<!-- Navbar -->
+<template name="nav">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
                 Site Ace
             </a>
-
+            </div>
+            <div class="login">
+                <br> {{> loginButtons}}
+            </div>
         </div>
-        <div class="login"><br>
-            {{> loginButtons}}
-
-        </div>
-    </div>
-</nav>
-
-<div class="container">
-    <h1>Welcome to the Website Share {{username}} !</h1>
-    {{> website_form}}
-    {{> website_list}}
-</div>
-</body>
-
-
+    </nav>
+</template>
+<!--   website_form with website_list -->
+<template name="website_main_list">
+    {{> website_form}} {{> website_list}}
+</template>
+<!-- website_form -->
 <template name="website_form">
-    {{# if currentUser}}<!-- Only displays the 'add button' if someone is logged in.-->
-        <a class="btn btn-default js-toggle-website-form" href="#">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
+    {{# if currentUser}}
+    <!-- Only displays the 'add button' if someone is logged in.-->
+    <a class="btn btn-default js-toggle-website-form" href="#">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </a>
     {{/if}}
     <div id="website_form" class="hidden_div">
         <form class="js-save-website-form">
@@ -45,48 +67,86 @@
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <input type="text" class="form-control" id="description"
-                       placeholder="I found this site really useful for ...">
+                <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
             </div>
-
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
     </div>
+    <!-- /////////////////////////// -->
 </template>
-
-<!-- template that displays several website items -->
+<!-- Website List -->
 <template name="website_list">
     <ol>
-        {{#each websites}}
-            {{>website_item}}
-        {{/each}}
+        {{#each websites}} {{>website_item}} {{/each}}
     </ol>
 </template>
 
 <!-- template that displays individual website entries -->
 <template name="website_item">
-    <li style="border-top:1px solid gray;margin-top:2%;">
-        <a href="{{url}}">{{title}}</a>
+ <li style="border-top:1px solid gray;margin-top:2%;">
+            <a href="{{url}}">{{title}}</a>
+            <p>
+                {{description}}
+            </p>
+            <p>
+                Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span> on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span>
+            </p>
+            <a href="#" class="btn btn-default js-upvote">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+            <a href="#" class="btn btn-default js-downvote">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            </a>
+            
+        <a href="/comments/{{_id}}" >comments</a>
+            <p class="up-down">
+                <span class="glyphicon glyphicon-thumbs-up"></span> {{upvote}}
+                <span class="glyphicon glyphicon-thumbs-down"></span> {{downvote}}
+            </p>
+        </li>
+</template>
 
-        <p>
-            {{description}}
-        </p>
-        <p>
-            Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span>  
-            on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span> 
-
-            <!--// ADD THE NUMBER OF UP VOTES AND DOWN VOTES -->
-        </p>        
-        <a href="#" class="btn btn-default js-upvote">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
-        <a href="#" class="btn btn-default js-downvote">
-            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-        </a>
-         <p class="up-down">
-             <span class="glyphicon glyphicon-thumbs-up" ></span>     {{upvote}}      
-             <span class="glyphicon glyphicon-thumbs-down"></span>  {{downvote}}  
-        </p>
-       
-    </li>
+<!-- Website Detail-->
+<template name="comments">
+  
+       <div class="container">
+            <a href="{{url}}">{{title}}</a>
+           <p>
+               {{description}}
+           </p>
+           <p>
+               Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span> on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span>
+           </p>
+           <a href="#" class="btn btn-default js-upvote">
+               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+           </a>
+           <a href="#" class="btn btn-default js-downvote">
+               <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+           </a>
+           <p class="up-down">
+               <span class="glyphicon glyphicon-thumbs-up"></span> {{upvote}}
+               <span class="glyphicon glyphicon-thumbs-down"></span> {{downvote}}
+           </p>
+              
+               <div class="row">
+           <div class="col-md-5">
+               <h3 class="heading">Comments and Responses</h3>
+           </div>
+           <div class="col-md-7">
+               <div id="upper_blank"></div>
+           </div>
+               </div>
+               <div class="row">
+           <div class="col-md-12">
+               <form action="" class="form form-group">
+                   <div id="comment-message" class="form-row">
+                       <textarea style="width:500px;height:200px;" name="comment" placeholder="Message" id="comment"></textarea>
+                   </div>
+                   <a href="#">
+                       <input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment">
+                   </a>
+               </form>
+           </div>
+               </div>
+       </div>
 </template>
