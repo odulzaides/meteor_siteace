@@ -9,8 +9,7 @@
  ============================================-->
 <!-- App Layout -->
 <template name="app_layout">
-    {{>yield "navbar"}}  
-    {{>yield "main"}}
+    {{>yield "navbar"}} {{>yield "main"}}
 </template>
 <!-- Welcome -->
 <template name="welcome">
@@ -80,73 +79,85 @@
         {{#each websites}} {{>website_item}} {{/each}}
     </ol>
 </template>
-
 <!-- template that displays individual website entries -->
 <template name="website_item">
- <li style="border-top:1px solid gray;margin-top:2%;">
-            <a href="{{url}}">{{title}}</a>
-            <p>
-                {{description}}
-            </p>
-            <p>
-                Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span> on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span>
-            </p>
-            <a href="#" class="btn btn-default js-upvote">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </a>
-            <a href="#" class="btn btn-default js-downvote">
-                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-            </a>
-            
-        <a href="/comments/{{_id}}" >comments</a>
-            <p class="up-down">
-                <span class="glyphicon glyphicon-thumbs-up"></span> {{upvote}}
-                <span class="glyphicon glyphicon-thumbs-down"></span> {{downvote}}
-            </p>
-        </li>
+    <li style="border-top:1px solid gray;margin-top:2%;">
+        <a href="{{url}}">{{title}}</a>
+        <p>
+            {{description}}
+        </p>
+        <p>
+            Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span> on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span>
+        </p>
+        <a href="#" class="btn btn-default js-upvote">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+        <a href="#" class="btn btn-default js-downvote">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+        </a>
+        <a href="/comments/{{_id}}">comments</a>
+        <p class="up-down">
+            <span class="glyphicon glyphicon-thumbs-up"></span> {{upvote}}
+            <span class="glyphicon glyphicon-thumbs-down"></span> {{downvote}}
+        </p>
+    </li>
 </template>
-
 <!-- Website Detail-->
 <template name="comments">
-  
-       <div class="container">
-            <a href="{{url}}">{{title}}</a>
-           <p>
-               {{description}}
-           </p>
-           <p>
-               Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span> on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span>
-           </p>
-           <a href="#" class="btn btn-default js-upvote">
-               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-           </a>
-           <a href="#" class="btn btn-default js-downvote">
-               <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-           </a>
-           <p class="up-down">
-               <span class="glyphicon glyphicon-thumbs-up"></span> {{upvote}}
-               <span class="glyphicon glyphicon-thumbs-down"></span> {{downvote}}
-           </p>
-              
-               <div class="row">
-           <div class="col-md-5">
-               <h3 class="heading">Comments and Responses</h3>
-           </div>
-           <div class="col-md-7">
-               <div id="upper_blank"></div>
-           </div>
-               </div>
-               <div class="row">
-           <div class="col-md-12">
-               <form action="" class="form form-group">
-                   <div id="comment-message" class="form-row">
-                       <textarea style="width:500px;height:200px;" name="comment" placeholder="Message" id="comment"></textarea>
-                   </div>
-                   <a href="#">
-                       <input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment">
-                   </a>
-               </form>
-           </div>
-               </div>
+    <div class="container">
+        <a href="{{url}}">{{title}}</a>
+        <p>
+            {{description}}
+        </p>
+        <p>
+            Added by: <span style="color:rgb(72, 159, 218)">{{getUser createdBy}}</span> on: <span style="color:rgb(72, 159, 218)">{{createdOn}}</span>
+        </p>
+        <a href="#" class="btn btn-default js-upvote">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+        <a href="#" class="btn btn-default js-downvote">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+        </a>
+        <p class="up-down">
+            <span class="glyphicon glyphicon-thumbs-up"></span> {{upvote}}
+            <span class="glyphicon glyphicon-thumbs-down"></span> {{downvote}}
+        </p>
+        <div class="row">
+            <div class="col-md-5">
+                <h3 class="heading">Comments and Responses</h3>
+            </div>
+            <div class="col-md-7">
+                <div id="upper_blank"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+            <!-- FORM FOR COMMENTS -->
+                <form action="" class=" js-comment-add">
+                    <textarea style="width:40%;height:15%;" placeholder="Message" id="comment"></textarea>
+                    <br>
+                    <a href="#">
+                        <input type="submit" id="commentSubmit" value="Submit Comment">
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        <!--  COMMENTS -->
+       <div class="row">
+            <ul>
+               {{#each websites}} 
+                        {{>comments}} 
+                   {{/each}}
+           
+           </ul>
        </div>
+       
+   </div>  <!--  Container -->
+</template>
+<template name="comments">
+    <li id="comments">
+        {{comment}}
+    </li>
 </template>

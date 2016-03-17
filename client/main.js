@@ -102,8 +102,8 @@ Template.website_item.helpers({
     Template.comments.helpers({
     getUser: function(user_id) {
         var user = Meteor.users.findOne({ _id: user_id });
-        console.log(Meteor.users.findOne({_id:user_id}));
-        console.log(user_id);
+        // console.log(Meteor.users.findOne({_id:user_id}));
+        // console.log(user_id);
         // console.log(user);
         if (user) {
             return user.username;
@@ -115,6 +115,7 @@ Template.website_item.helpers({
 
 ///     template events
 
+///     Website Item
 Template.website_item.events({
     "click .js-upvote": function(event) {
         // example of how you can access the id for the website in the database
@@ -136,11 +137,11 @@ Template.website_item.events({
 
         // TODO - put the code in here to remove a vote from a website!
         Websites.update({ _id: website_id }, { $inc: { downvote: +1 } });
-
         return false; // prevent the button from reloading the page
     }
 })
 
+///     Website Form
 Template.website_form.events({
     "click .js-toggle-website-form": function(event) {
         $("#website_form").toggle('slow');
@@ -165,18 +166,45 @@ Template.website_form.events({
                 upVote: 0,
                 downVote: 0
             });
-
-
-            // $("#url").val(" ");
-            // $("#title").val(" ");
-            // $("#description").val(" ");
-            // $("#website_form").toggle('slow');
-
+            $("#url").val(" ");
+            $("#title").val(" ");
+            $("#description").val(" ");
+            $("#website_form").toggle('slow');
             return false;
-
         }
-
         return false; // stop the form submit from reloading the page
+    },
+}); /// End website form events
 
+Template.comments.events({
+    "click .js-comment-add":function (event){
+        console.log('clicked');
+        var comment = $('#comment').val();
+       Websites.insert({
+            comment:comment
+       });
+    },
+     "click .js-upvote": function(event) {
+        // example of how you can access the id for the website in the database
+        // (this is the data context for the template)
+        var website_id = this._id;
+        console.log("Up voting website with id " + website_id);
+        //
+        // TODO - put the code in here to add a vote to a website!
+        Websites.update({ _id: website_id }, { $inc: { upvote: +1 } }); // for a vote UP
+
+        return false; // prevent the button from reloading the page
+    },
+    "click .js-downvote": function(event) {
+
+        // example of how you can access the id for the website in the database
+        // (this is the data context for the template)
+        var website_id = this._id;
+        console.log("Down voting website with id " + website_id);
+
+        // TODO - put the code in here to remove a vote from a website!
+        Websites.update({ _id: website_id }, { $inc: { downvote: +1 } });
+        return false; // prevent the button from reloading the page
     }
-});
+
+}); /// End comments events
